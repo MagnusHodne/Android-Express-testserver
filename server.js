@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 
 const app = express();
 
@@ -32,14 +33,20 @@ const images = [
   },
 ];
 
+let serverUrl = "";
+
 app.post("/api/v1/imagesearch/upload", (req, res, next) => {
-  res.sendStatus(200);
+  res.send(`${req.protocol}://${req.hostname}/api/v1/testimage`);
 });
 
 app.get("/api/v1/imagesearch/bing", (req, res, next) => {
   const { url } = req.query;
   console.log(url);
   res.json(images);
+});
+
+app.get("/api/v1/testimage", (req, res, next) => {
+  res.sendFile(path.resolve("potato.jpg"));
 });
 
 app.get("/api/v1/imagesearch/google", (req, res, next) => {
