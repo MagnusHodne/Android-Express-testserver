@@ -33,34 +33,36 @@ const images = [
   },
 ];
 
-let serverUrl = "";
+const reverseSearch = (req, res) => {
+  const { url } = req.query;
+  console.log(url);
+  res.json(images);
+};
+
+app.get("/api/v1/testimage", (req, res, _) => {
+  res.sendFile(path.resolve("potato.jpg"));
+});
 
 app.post("/api/v1/imagesearch/upload", (req, res, next) => {
   res.send(`${req.protocol}://${req.hostname}/api/v1/testimage`);
 });
 
-app.get("/api/v1/imagesearch/bing", (req, res, next) => {
-  const { url } = req.query;
-  console.log(url);
-  res.json(images);
+app.get("/api/v1/imagesearch/bing", (req, res, _) => {
+  reverseSearch(req, res);
 });
 
-app.get("/api/v1/testimage", (req, res, next) => {
-  res.sendFile(path.resolve("potato.jpg"));
+app.get("/api/v1/imagesearch/google", (req, res, _) => {
+  reverseSearch(req, res);
 });
 
-app.get("/api/v1/imagesearch/google", (req, res, next) => {
-  const { url } = req.query;
-  console.log(url);
-  res.json(images);
-});
-
-app.get("/api/v1/imagesearch/tineye", (req, res, next) => {
-  const { url } = req.query;
-  console.log(url);
-  res.json(images);
+app.get("/api/v1/imagesearch/tineye", (req, res, _) => {
+  reverseSearch(req, res);
 });
 
 const server = app.listen(process.env.PORT || 3000, () => {
-  console.log(`Server started on http://localhost:${server.address().port}`);
+  console.log(
+    `Server started on ${server.address().protocol}://localhost:${
+      server.address().port
+    }`
+  );
 });
